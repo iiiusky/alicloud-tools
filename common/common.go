@@ -25,6 +25,7 @@ import (
 var AccessKey string
 var SecretKey string
 var ECSRegions []ecs.Region
+var APPVersion string
 
 // 初始化区域信息表
 func InitEcsRegions() bool {

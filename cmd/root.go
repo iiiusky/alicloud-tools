@@ -34,6 +34,10 @@ var rootCmd = &cobra.Command{
 	Short: "阿里云API利用工具",
 	Long:  `该工具主要是方便快速使用阿里云api执行一些操作`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if cmd.Use == "version" {
+			return nil
+		}
+
 		if accessKey == "" || secretKey == "" {
 			return errors.New("请设置ak以及sk的值")
 		}

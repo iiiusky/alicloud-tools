@@ -15,8 +15,12 @@ limitations under the License.
 */
 package main
 
-import "alicloud-tools/cmd"
+import (
+	"alicloud-tools/cmd"
+	"alicloud-tools/common"
+)
 
 func main() {
-  cmd.Execute()
+	common.APPVersion = "1.0.0"
+	cmd.Execute()
 }
