@@ -57,7 +57,7 @@ func GetRegionInstances(regionId string) (instances []ecs.Instance) {
 
 // 获取所有实例
 func GetAllInstances(regionId string, printInfo bool) (instances []ecs.Instance) {
-	for _, region := range common.ECSRegions {
+	for _, region := range common.Regions {
 		if regionId != "" && regionId != region.RegionId {
 			continue
 		}
@@ -80,7 +80,7 @@ func GetAllInstances(regionId string, printInfo bool) (instances []ecs.Instance)
 // 查询单个实例
 func QuerySingleInstance(regionId string, instanceId string) (instances ecs.Instance) {
 	if regionId == "" {
-		for _, region := range common.ECSRegions {
+		for _, region := range common.Regions {
 			regionInstances := GetRegionInstances(region.RegionId)
 			for _, instance := range regionInstances {
 				if instance.InstanceId == instanceId {

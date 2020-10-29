@@ -24,7 +24,7 @@ import (
 
 var AccessKey string
 var SecretKey string
-var ECSRegions []ecs.Region
+var Regions []ecs.Region
 var APPVersion string
 
 // 初始化区域信息表
@@ -44,7 +44,7 @@ func InitEcsRegions() bool {
 		return false
 	}
 
-	ECSRegions = response.Regions.Region
+	Regions = response.Regions.Region
 	return true
 }
 
@@ -53,7 +53,7 @@ func ShowRegions() {
 	var dates [][]string
 	count := 0
 
-	for _, region := range ECSRegions {
+	for _, region := range Regions {
 		data := []string{fmt.Sprintf("#%d", count+1), region.LocalName, region.RegionId}
 		dates = append(dates, data)
 		count = count + 1
