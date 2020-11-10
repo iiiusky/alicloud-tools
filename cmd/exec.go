@@ -17,12 +17,16 @@ package cmd
 
 import (
 	"alicloud-tools/core"
+	"bufio"
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
+	"os"
+	"strings"
 )
 
 var windowsDefaultScriptType string
+var osType string
 var commandContent string
 var instanceIds []string
 
@@ -47,7 +51,20 @@ var execCmd = &cobra.Command{
 						continue
 					}
 
-					fmt.Printf("当前实例 %s 的操作系统类型为 %s,", instance.InstanceId, instance.OsType)
+					if instance.OsType == "" {
+						inputReader := bufio.NewReader(os.Stdin)
+						fmt.Print("未自动获取到系统类型,请手动指定系统类型(windows\\linux):")
+						osType, _ = inputReader.ReadString('\n')
+						osType = strings.TrimSpace(osType)
+
+					} else {
+						fmt.Printf("当前实例 %s 的操作系统类型为 %s,", instance.InstanceId, instance.OsType)
+					}
+
+					if osType != "" {
+						fmt.Printf("当前实例 %s 的操作系统类型为 %s【命令行指定】,", instance.InstanceId, osType)
+					}
+
 					switch instance.OsType {
 					case "windows":
 						if windowsDefaultScriptType == "RunBatScript" || windowsDefaultScriptType == "RunPowerShellScript" {
@@ -74,6 +91,7 @@ var execCmd = &cobra.Command{
 
 func init() {
 	execCmd.Flags().StringVarP(&windowsDefaultScriptType, "scriptType", "t", "RunBatScript", "Windows类型的实例脚本执行类型,Linux类型实例全部为Shell,默认为RunBatScript,类型说明:[RunBatScript：适用于Windows实例的Bat脚本。\nRunPowerShellScript：适用于Windows实例的PowerShell脚本。]")
+	execCmd.Flags().StringVar(&osType, "os", "", "系统类型,该选项会覆盖默认获取到系统类型,从而影响执行脚本的类型.")
 	execCmd.Flags().StringVarP(&commandContent, "command", "c", "", "执行的命令")
 	execCmd.Flags().StringSliceVarP(&instanceIds, "instanceIds", "I", nil, "要执行命令的实例ID,多个使用英文逗号分隔")
 
