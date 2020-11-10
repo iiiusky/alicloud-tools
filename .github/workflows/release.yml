@@ -19,4 +19,4 @@ jobs:
         goarch: ${{ matrix.goarch }}
         goversion: "https://golang.org/dl/go1.15.3.linux-amd64.tar.gz"
         binary_name: "AliCloud-Tools"
-        extra_files: README.md,LICENSE
+        extra_files: README.MD,LICENSE
