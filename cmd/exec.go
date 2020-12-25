@@ -58,6 +58,7 @@ var execCmd = &cobra.Command{
 						osType = strings.TrimSpace(osType)
 
 					} else {
+						osType = strings.ToLower(instance.OSType)
 						fmt.Printf("当前实例 %s 的操作系统类型为 %s,", instance.InstanceId, instance.OsType)
 					}
 
@@ -65,7 +66,7 @@ var execCmd = &cobra.Command{
 						fmt.Printf("当前实例 %s 的操作系统类型为 %s【命令行指定】,", instance.InstanceId, osType)
 					}
 
-					switch instance.OsType {
+					switch osType {
 					case "windows":
 						if windowsDefaultScriptType == "RunBatScript" || windowsDefaultScriptType == "RunPowerShellScript" {
 							fmt.Printf("正在以 %s 的方式执行命令,命令内容: %s ", windowsDefaultScriptType, commandContent)
