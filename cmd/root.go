@@ -26,6 +26,11 @@ import (
 var accessKey string
 var secretKey string
 var regionId string
+var stsAccessKey string
+var stsSecretKey string
+var stsToken string
+var verbose bool
+var useSTS bool
 var showRegions bool
 
 // rootCmd represents the base command when called without any subcommands
@@ -37,13 +42,25 @@ var rootCmd = &cobra.Command{
 		if cmd.Use == "version" {
 			return nil
 		}
+		common.Verbose = verbose
 
-		if accessKey == "" || secretKey == "" {
+		if (accessKey == "" || secretKey == "") && useSTS == false {
 			return errors.New("请设置ak以及sk的值")
 		}
 
-		common.AccessKey = accessKey
-		common.SecretKey = secretKey
+		if useSTS && (stsAccessKey == "" || stsSecretKey == "" || stsToken == "") {
+			return errors.New("请设置stsAccessKey、stsSecretKey、stsToken的值")
+		}
+
+		if useSTS {
+			common.STSAccessKey = stsAccessKey
+			common.STSSecretKey = stsSecretKey
+			common.STSToken = stsToken
+			common.UseSTS = useSTS
+		} else {
+			common.AccessKey = accessKey
+			common.SecretKey = secretKey
+		}
 
 		if !common.InitEcsRegions() {
 			return errors.New("ak、sk验证失败.")
@@ -73,5 +90,12 @@ func init() {
 	rootCmd.Flags().BoolVar(&showRegions, "regions", false, "显示所有地域信息")
 	rootCmd.PersistentFlags().StringVarP(&accessKey, "ak", "a", "", "阿里云 AccessKey")
 	rootCmd.PersistentFlags().StringVarP(&secretKey, "sk", "s", "", "阿里云 SecretKey")
+
+	rootCmd.PersistentFlags().StringVar(&stsAccessKey, "sak", "", "阿里云 STS AccessKey")
+	rootCmd.PersistentFlags().StringVar(&stsSecretKey, "ssk", "", "阿里云 STS SecretKey")
+	rootCmd.PersistentFlags().StringVar(&stsToken, "token", "", "阿里云 STS Session Token")
+	rootCmd.PersistentFlags().BoolVar(&useSTS, "sts", false, "启用STSToken模式")
+
+	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "显示详细的执行过程")
 	rootCmd.PersistentFlags().StringVarP(&regionId, "rid", "r", "", "阿里云 地域ID,在其他支持rid的子命令中,如果设置了地域ID,则只显示指定区域的信息,否则为全部.")
 }

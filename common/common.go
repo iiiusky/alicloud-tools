@@ -17,6 +17,7 @@ limitations under the License.
 package common
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/bndr/gotabulate"
@@ -24,14 +25,24 @@ import (
 
 var AccessKey string
 var SecretKey string
+var STSAccessKey string
+var STSSecretKey string
+var STSToken string
+var UseSTS bool
+var Verbose bool
 var ECSRegions []ecs.Region
 var APPVersion string
 
-// 初始化区域信息表
+// InitEcsRegions 初始化区域信息表
 func InitEcsRegions() bool {
-	client, err := ecs.NewClientWithAccessKey("cn-hangzhou", AccessKey, SecretKey)
+	client, err := GetEcsClient("cn-hangzhou")
 	request := ecs.CreateDescribeRegionsRequest()
 	request.Scheme = "https"
+
+	if Verbose {
+		requestByte, _ := json.Marshal(request)
+		fmt.Println(fmt.Sprintf("\r\n InitEcsRegions request is: %s", string(requestByte)))
+	}
 
 	if err != nil {
 		Logger().Error(fmt.Sprintf("【初始化区域信息表】创建客户端发生异常,异常信息为 %s", err.Error()))
@@ -39,16 +50,30 @@ func InitEcsRegions() bool {
 	}
 
 	response, err := client.DescribeRegions(request)
+
 	if err != nil {
 		Logger().Error(fmt.Sprintf("【初始化区域信息表】创建获取区域信息请求发生异常,异常信息为 %s", err.Error()))
 		return false
+	}
+
+	if Verbose {
+		fmt.Println(fmt.Sprintf("\r\n InitEcsRegions response is: %s", response.String()))
 	}
 
 	ECSRegions = response.Regions.Region
 	return true
 }
 
-// 显示地域信息
+// GetEcsClient 获取ECS 客户端
+func GetEcsClient(regionId string) (*ecs.Client, error) {
+	if UseSTS {
+		return ecs.NewClientWithStsToken(regionId, STSAccessKey, STSSecretKey, STSToken)
+	} else {
+		return ecs.NewClientWithAccessKey(regionId, AccessKey, SecretKey)
+	}
+}
+
+// ShowRegions 显示地域信息
 func ShowRegions() {
 	var dates [][]string
 	count := 0

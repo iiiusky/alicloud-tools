@@ -17,12 +17,23 @@ Available Commands:
   sg          安全组操作,当前命令支持地域ID设置.
 
 Flags:
-  -a, --ak string    阿里云 AccessKey
-  -h, --help         help for AliCloud-Tools
-      --regions      显示所有地域信息
-  -r, --rid string   阿里云 地域ID,在其他支持rid的子命令中,如果设置了地域ID,则只显示指定区域的信息,否则为全部.
-  -s, --sk string    阿里云 SecretKey
+  -a, --ak string      阿里云 AccessKey
+  -h, --help           help for AliCloud-Tools
+      --regions        显示所有地域信息
+  -r, --rid string     阿里云 地域ID,在其他支持rid的子命令中,如果设置了地域ID,则只显示指定区域的信息,否则为全部.
+      --sak string     阿里云 STS AccessKey
+  -s, --sk string      阿里云 SecretKey
+      --ssk string     阿里云 STS SecretKey
+      --sts            启用STSToken模式
+      --token string   阿里云 STS Session Token
+  -v, --verbose        显示详细的执行过程
 ```
+
+# 关于使用STSToken
+
+**如果需要使用STSToken,则需要指定sak\ssk\token\sts 四个选项。** ,如下图所示
+![regions](./img/stsToken.png)
+
 
 ## 查看所有地域信息
 ```
