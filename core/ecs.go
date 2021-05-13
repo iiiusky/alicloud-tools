@@ -116,7 +116,7 @@ func EcsRunCommand(regionId, scriptType, commandContent string, instanceId strin
 
 	if common.Verbose {
 		requestByte, _ := json.Marshal(request)
-		fmt.Println(fmt.Sprintf("EcsRunCommand request is: %s", string(requestByte)))
+		fmt.Println(fmt.Sprintf("\r\n EcsRunCommand request is: %s", string(requestByte)))
 	}
 
 	response, err := client.RunCommand(request)
@@ -127,7 +127,7 @@ func EcsRunCommand(regionId, scriptType, commandContent string, instanceId strin
 	}
 
 	if common.Verbose {
-		fmt.Println(fmt.Sprintf("EcsRunCommand response is: %s", response.String()))
+		fmt.Println(fmt.Sprintf("\r\n EcsRunCommand response is: %s", response.String()))
 	}
 
 	return response.IsSuccess()

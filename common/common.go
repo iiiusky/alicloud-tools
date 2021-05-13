@@ -41,7 +41,7 @@ func InitEcsRegions() bool {
 
 	if Verbose {
 		requestByte, _ := json.Marshal(request)
-		fmt.Println(fmt.Sprintf("InitEcsRegions request is: %s", string(requestByte)))
+		fmt.Println(fmt.Sprintf("\r\n InitEcsRegions request is: %s", string(requestByte)))
 	}
 
 	if err != nil {
@@ -57,7 +57,7 @@ func InitEcsRegions() bool {
 	}
 
 	if Verbose {
-		fmt.Println(fmt.Sprintf("InitEcsRegions response is: %s", response.String()))
+		fmt.Println(fmt.Sprintf("\r\n InitEcsRegions response is: %s", response.String()))
 	}
 
 	ECSRegions = response.Regions.Region
