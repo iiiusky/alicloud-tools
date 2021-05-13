@@ -23,9 +23,9 @@ import (
 	"github.com/iiiusky/alicloud-tools/common"
 )
 
-// 获取安全组信息
+// GetEcsSecurityGroupInfo 获取安全组信息
 func GetEcsSecurityGroupInfo(regionId, securityGroupId string) ecs.DescribeSecurityGroupAttributeResponse {
-	client, err := ecs.NewClientWithAccessKey(regionId, common.AccessKey, common.SecretKey)
+	client, err := common.GetEcsClient(regionId)
 	if err != nil {
 		common.Logger().Error(fmt.Sprintf("【获取安全组信息】创建客户端发生异常,异常信息为 %s", err.Error()))
 		return ecs.DescribeSecurityGroupAttributeResponse{}
@@ -44,9 +44,9 @@ func GetEcsSecurityGroupInfo(regionId, securityGroupId string) ecs.DescribeSecur
 	}
 }
 
-// 添加指定安全组ID的端口策略
+// AddSecurityGroupPolicy 添加指定安全组ID的端口策略
 func AddSecurityGroupPolicy(regionId, securityGroupId, ipProtocol, portRange, cidrIp string) bool {
-	client, err := ecs.NewClientWithAccessKey(regionId, common.AccessKey, common.SecretKey)
+	client, err := common.GetEcsClient(regionId)
 	if err != nil {
 		common.Logger().Error(fmt.Sprintf("【添加指定安全组ID的端口策略】创建客户端发生异常,异常信息为 %s", err.Error()))
 		return false
@@ -84,9 +84,9 @@ func AddSecurityGroupPolicy(regionId, securityGroupId, ipProtocol, portRange, ci
 	return responseEg.IsSuccess() && response.IsSuccess()
 }
 
-// 删除指定安全组ID的端口
+// RemoveSecurityGroupPolicy 删除指定安全组ID的端口
 func RemoveSecurityGroupPolicy(regionId, securityGroupId, ipProtocol, portRange, cidrIp string) bool {
-	client, err := ecs.NewClientWithAccessKey(regionId, common.AccessKey, common.SecretKey)
+	client, err := common.GetEcsClient(regionId)
 	if err != nil {
 		common.Logger().Error(fmt.Sprintf("【删除指定安全组ID的端口】创建客户端发生异常,异常信息为 %s", err.Error()))
 		return false
@@ -123,7 +123,7 @@ func RemoveSecurityGroupPolicy(regionId, securityGroupId, ipProtocol, portRange,
 	return responseEg.IsSuccess() && response.IsSuccess()
 }
 
-// 显示ecs安全组的信息
+// ShowEcsSecurityGroupInfo 显示ecs安全组的信息
 func ShowEcsSecurityGroupInfo(securityGroup ecs.DescribeSecurityGroupAttributeResponse) {
 	fmt.Printf("安全组ID: %s \t 安全组名称: %s \t安全组描述: %s \t 策略条数:%d\n", securityGroup.SecurityGroupId,
 		securityGroup.SecurityGroupName, securityGroup.Description, len(securityGroup.Permissions.Permission))

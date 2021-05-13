@@ -17,6 +17,7 @@ limitations under the License.
 package core
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
@@ -25,9 +26,9 @@ import (
 	"strings"
 )
 
-// 获取指定区域的所有实例列表
+// GetRegionInstances 获取指定区域的所有实例列表
 func GetRegionInstances(regionId string) (instances []ecs.Instance) {
-	client, err := ecs.NewClientWithAccessKey(regionId, common.AccessKey, common.SecretKey)
+	client, err := common.GetEcsClient(regionId)
 	if err != nil {
 		common.Logger().Error(fmt.Sprintf("【获取指定区域的所有实例列表】创建客户端发生异常,异常信息为 %s", err.Error()))
 		return
@@ -55,7 +56,7 @@ func GetRegionInstances(regionId string) (instances []ecs.Instance) {
 	return instances
 }
 
-// 获取所有实例
+// GetAllInstances 获取所有实例
 func GetAllInstances(regionId string, printInfo bool) (instances []ecs.Instance) {
 	for _, region := range common.ECSRegions {
 		if regionId != "" && regionId != region.RegionId {
@@ -77,7 +78,7 @@ func GetAllInstances(regionId string, printInfo bool) (instances []ecs.Instance)
 	return instances
 }
 
-// 查询单个实例
+// QuerySingleInstance 查询单个实例
 func QuerySingleInstance(regionId string, instanceId string) (instances ecs.Instance) {
 	if regionId == "" {
 		for _, region := range common.ECSRegions {
@@ -99,9 +100,9 @@ func QuerySingleInstance(regionId string, instanceId string) (instances ecs.Inst
 	return instances
 }
 
-// 执行命令
+// EcsRunCommand 执行命令
 func EcsRunCommand(regionId, scriptType, commandContent string, instanceId string) bool {
-	client, err := ecs.NewClientWithAccessKey(regionId, common.AccessKey, common.SecretKey)
+	client, err := common.GetEcsClient(regionId)
 	if err != nil {
 		common.Logger().Error(fmt.Sprintf("【执行命令】创建客户端发生异常,异常信息为 %s", err.Error()))
 		return false
@@ -113,6 +114,11 @@ func EcsRunCommand(regionId, scriptType, commandContent string, instanceId strin
 	request.CommandContent = commandContent
 	request.InstanceId = &[]string{instanceId}
 
+	if common.Verbose {
+		requestByte, _ := json.Marshal(request)
+		fmt.Println(fmt.Sprintf("EcsRunCommand request is: %s", string(requestByte)))
+	}
+
 	response, err := client.RunCommand(request)
 
 	if err != nil {
@@ -120,12 +126,16 @@ func EcsRunCommand(regionId, scriptType, commandContent string, instanceId strin
 		return false
 	}
 
+	if common.Verbose {
+		fmt.Println(fmt.Sprintf("EcsRunCommand response is: %s", response.String()))
+	}
+
 	return response.IsSuccess()
 }
 
-// 检测云助手安装情况
+// CheckCloudAssistantStatus 检测云助手安装情况
 func CheckCloudAssistantStatus(regionId, instanceId string) bool {
-	client, err := ecs.NewClientWithAccessKey(regionId, common.AccessKey, common.SecretKey)
+	client, err := common.GetEcsClient(regionId)
 	if err != nil {
 		common.Logger().Error(fmt.Sprintf("【检测云助手安装情况】创建客户端发生异常,异常信息为 %s", err.Error()))
 		return false
@@ -148,7 +158,7 @@ func CheckCloudAssistantStatus(regionId, instanceId string) bool {
 	return true
 }
 
-// 显示传入的实例列表具体信息
+// ShowInstancesInfo 显示传入的实例列表具体信息
 func ShowInstancesInfo(instances []ecs.Instance, isRunner bool) {
 	for _, instance := range instances {
 		if isRunner && instance.Status != "Running" {
