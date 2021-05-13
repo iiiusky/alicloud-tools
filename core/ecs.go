@@ -17,10 +17,10 @@ limitations under the License.
 package core
 
 import (
-	"alicloud-tools/common"
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
+	"github.com/iiiusky/alicloud-tools/common"
 	"strconv"
 	"strings"
 )

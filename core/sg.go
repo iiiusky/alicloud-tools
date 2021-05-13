@@ -17,10 +17,10 @@ limitations under the License.
 package core
 
 import (
-	"alicloud-tools/common"
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/bndr/gotabulate"
+	"github.com/iiiusky/alicloud-tools/common"
 )
 
 // 获取安全组信息
@@ -80,7 +80,6 @@ func AddSecurityGroupPolicy(regionId, securityGroupId, ipProtocol, portRange, ci
 		common.Logger().Error(fmt.Sprintf("【添加指定安全组ID的端口策略】创建添加端口策略【出方向】请求发生异常,异常信息为 %s", err.Error()))
 		return false
 	}
-
 
 	return responseEg.IsSuccess() && response.IsSuccess()
 }

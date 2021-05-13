@@ -1,4 +1,4 @@
-module alicloud-tools
+module github.com/iiiusky/alicloud-tools
 
 go 1.14
 

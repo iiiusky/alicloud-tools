@@ -16,8 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"alicloud-tools/core"
 	"fmt"
+	"github.com/iiiusky/alicloud-tools/core"
 	"github.com/spf13/cobra"
 )
 
