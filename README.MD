@@ -58,7 +58,7 @@ Flags:
 ![list-2](./img/list-2.png)
 ## 查看指定实例的信息
 ```
-./AliCloud-Tools -a <AccessKey> -s <SecretKey> [-r <regionId>] ecs --eid <InstanceId>
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> [-r <regionId>] ecs --sid <InstanceId>
 ```
 ![instance-info](./img/instance-info.png)
 
@@ -71,19 +71,41 @@ Flags:
 
 ## 查看安全组策略
 ```
-./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> sg --eid <SecruityGroupId>
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> sg --sid <SecruityGroupId>
 ```
 ![sg-info](./img/sg-info.png)
 
 ## 增加安全组策略
 ```
-./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> --eid <SecruityGroupId> --action add --protocol tcp --port 0/0 --ip 0.0.0.0/0
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> --sid <SecruityGroupId> --action add --protocol tcp --port 0/0 --ip 0.0.0.0/0
 ```
 ![sg-add](./img/sg-add.png)
 
 ## 删除安全组策略
 ```
-./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> --eid <SecruityGroupId> --action del --protocol tcp --port 0/0 --ip 0.0.0.0/0
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> --sid <SecruityGroupId> --action del --protocol tcp --port 0/0 --ip 0.0.0.0/0
 
 ```
 ![sg-del](./img/sg-del.png)
+
+
+## 增加RAM用户
+```
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> ram --action add --username test2 --password 1q2w@WW3
+
+```
+![ram-del](./img/ram-add.jpg)
+
+## 查看RAM用户
+```
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> ram --action list
+
+```
+![ram-del](./img/ram-list.jpg)
+
+## 删除RAM用户
+```
+./AliCloud-Tools -a <AccessKey> -s <SecretKey> ram --action del --username test2
+
+```
+![ram-del](./img/ram-del.jpg)

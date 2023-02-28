@@ -28,16 +28,15 @@ var ramAction string
 // ramCmd represents the ram command
 var ramCmd = &cobra.Command{
 	Use:   "ram",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "RAM账号增删查操作",
+	Long:  `支持新增、删除、查看RAM账号功能`,
 	Run: func(cmd *cobra.Command, args []string) {
 		switch ramAction {
 		case "add":
+			if username == "" || password == "" {
+				fmt.Printf("请使用--username 以及--password 指定用户名及密码\n")
+				break
+			}
 			if core.CreateRamUser(username, password) {
 				fmt.Printf("创建用户 %s 成功\n", username)
 			} else {
@@ -45,6 +44,10 @@ to quickly create a Cobra application.`,
 			}
 			break
 		case "del":
+			if username == "" {
+				fmt.Printf("请使用--username 指定用户名\n")
+				break
+			}
 			if core.DeleteRamUser(username) {
 				fmt.Printf("删除用户 %s 成功\n", username)
 			} else {
