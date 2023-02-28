@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
+	"github.com/aliyun/alibaba-cloud-sdk-go/services/ram"
 	"github.com/bndr/gotabulate"
 )
 
@@ -70,6 +71,15 @@ func GetEcsClient(regionId string) (*ecs.Client, error) {
 		return ecs.NewClientWithStsToken(regionId, STSAccessKey, STSSecretKey, STSToken)
 	} else {
 		return ecs.NewClientWithAccessKey(regionId, AccessKey, SecretKey)
+	}
+}
+
+// GetRamClient 获取RAM客户端
+func GetRamClient() (*ram.Client, error) {
+	if UseSTS {
+		return ram.NewClientWithStsToken("cn-beijing", STSAccessKey, STSSecretKey, STSToken)
+	} else {
+		return ram.NewClientWithAccessKey("cn-beijing", AccessKey, SecretKey)
 	}
 }
 
