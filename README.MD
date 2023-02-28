@@ -14,7 +14,9 @@ Usage:
 Available Commands:
   ecs         ECS 操作(查询/执行命令),当前命令支持地域ID设置.
   help        Help about any command
+  ram         RAM账号增删查操作
   sg          安全组操作,当前命令支持地域ID设置.
+  version     
 
 Flags:
   -a, --ak string      阿里云 AccessKey
@@ -84,7 +86,6 @@ Flags:
 ## 删除安全组策略
 ```
 ./AliCloud-Tools -a <AccessKey> -s <SecretKey> -r <regionId> --sid <SecruityGroupId> --action del --protocol tcp --port 0/0 --ip 0.0.0.0/0
-
 ```
 ![sg-del](./img/sg-del.png)
 
@@ -92,20 +93,17 @@ Flags:
 ## 增加RAM用户
 ```
 ./AliCloud-Tools -a <AccessKey> -s <SecretKey> ram --action add --username test2 --password 1q2w@WW3
-
 ```
 ![ram-del](./img/ram-add.jpg)
 
 ## 查看RAM用户
 ```
 ./AliCloud-Tools -a <AccessKey> -s <SecretKey> ram --action list
-
 ```
 ![ram-del](./img/ram-list.jpg)
 
 ## 删除RAM用户
 ```
 ./AliCloud-Tools -a <AccessKey> -s <SecretKey> ram --action del --username test2
-
 ```
 ![ram-del](./img/ram-del.jpg)
